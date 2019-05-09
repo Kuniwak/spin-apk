@@ -1,0 +1,34 @@
+# Contributor: Daniel Sabogal <dsabogalcc@gmail.com>
+# Maintainer:
+pkgname=spin
+pkgver=6.4.9
+_pkgver=${pkgver//./}
+pkgrel=0
+pkgdesc="Tool for formal verification of distributed software systems"
+url="http://spinroot.com/"
+arch="x86 x86_64 ppc64le"
+license="BSD"
+depends=""
+makedepends="bison"
+subpackages="$pkgname-doc"
+source="http://spinroot.com/spin/Src/$pkgname$_pkgver.tar.gz"
+builddir="$srcdir/Spin"
+
+build() {
+	make -C "$builddir/Src$pkgver"
+}
+
+check() {
+	cd "$builddir"
+	./Src$pkgver/spin -V
+}
+
+package() {
+	cd "$builddir"
+	install -d "$pkgdir"/usr/share/man/man1
+	install -d "$pkgdir"/usr/bin
+	install -m644 Man/spin.1 "$pkgdir"/usr/share/man/man1
+	install -m755 "Src$pkgver"/spin "$pkgdir"/usr/bin
+}
+
+sha512sums="f7f9c2dc7cc89518f5845da8bb9f08a8f49567847a36a683b815bc9a7baa8892a1850937c29a44d20a454f4357f7b717b83797959de7fa3f027ec7f7f0bfebc3  spin649.tar.gz"
